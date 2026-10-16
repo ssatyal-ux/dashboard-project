@@ -1,0 +1,15 @@
+/* overall*/
+html {
+  background-color: #000000;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  color: #ffffff;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 40px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
