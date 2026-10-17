@@ -1,15 +1,20 @@
-/* overall*/
+/* html is for the whole page and overall appearance*/
 html {
-  background-color: #000000;
-  font-family: "Helvetica Neue", Arial, sans-serif;
+  background-color: #060606;
+  font-family:  IBM Plex 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   color: #ffffff;
 }
 
 body {
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  padding: 40px;
-  min-height: 100vh;
-  box-sizing: border-box;
+  display: flex; /* to line up the children*/
+  flex-direction: column; /* stacking it in a column*/
+  gap: 14px; /*space between children*/
+  margin: 0; /* removing white edgeof browser around page*/
+  padding: 40px; /*room inside page edge space before content*/
+  height: 100vh; /* filling in the screen fully*/
+  box-sizing: border-box; /*padding and border go inside*/
+}
+
+h1 {
+  font
 }
