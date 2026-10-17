@@ -1,6 +1,6 @@
 /* html is for the whole page and overall appearance*/
 html {
-  background-color: #060606;
+  background-color: #000000;
   font-family:  IBM Plex 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   color: #ffffff;
 }
@@ -17,9 +17,51 @@ body {
 
 /* main title*/
 h1 {
-  font-size: 30px;
+  font-size: 50px;
   font-weight: 400;
   margin: 0;
   padding: 0;
+}
 
+/* paragraph*/
+p {
+  font-size: 14px;
+  font-weight: lighter;
+  color:#FFFFFF;
+  margin: 0;
+  padding: 5px;
+}
+
+/*working on the header now - title*/
+header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  padding: 15px;
+  background-color: #E4002B;
+  color: #FFFFFF;
+  border: 2px solid #E4002B
+}
+
+/* main section*/
+main{
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  color: #41b6e6;
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+/*styling for section of map - our main display*/
+#map {
+  flex:1;
+  border: 1px solid #ffffff;
+  padding:0;
+  margin:0;
+  background-color: #000000;
 }
