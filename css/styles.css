@@ -78,3 +78,47 @@ box-sizing: border-box;
   padding-bottom:16px;
   font-weight: 500;
 }
+
+/* for panel on the left hand side */
+.controls {
+  width: 300px;
+  border: 1px solid #2f2f2f;
+  background-color: #161616;
+  overflow: auto; /* allowing to let this panel since this section can be long*/
+}
+
+/*styling the dropdown menu*/
+.category-select {
+  width: 100%;
+  height: 42px;
+  border: 0; /* no rounding*/
+  outline: 1px solid #2f2f2f;
+  border-radius: 0;
+  background-color: #262626;
+  color: #e5e5e5;
+  text-indent: 8px;
+  font-size: 14px;
+  cursor:pointer; /*mouse turns into a hand*/
+}
+
+/*for when the dropdown menu is clicked*/
+.category-select:focus {
+  outline: 2px solid #0052ce
+}
+
+/*radio button for selection*/
+.radio {
+  display: flex;
+  flex-direction: row;
+  align-items: center; /*verticle line up*/
+  margin-bottom: 8px; /* space before next selection option*/
+}
+
+/*label for the radio button*/
+.radio label {
+  font-size: 14px;
+  font-weight: 300;
+  margin: 0;
+  padding: 0;
+}
+
