@@ -1,77 +1,23 @@
-<!doctype html>
+<!doctype html> 
 
+<!-- setting up the language-->
 <html lang="en">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>Bikeshare Station Availability Dashboard</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <!-- adapting scaling of text and displays for the phone> --> 
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=divice-width, initial-scale=1">
+     <title>Chicago Business Mix by Community Area</title>
+     <!---->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    <!--linking the city of chicago styling-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700&display=swap">
+    <link rel="stylesheet" href="css/style.css">
   </head>
 
-  <body>
-    <main>
-      <section class="map-section">
-        <fieldset class="map-search-controls">
-          <input type="text" name="address-search" placeholder="Near..." aria-label="Search around an address or place">
-          <input type="time" name="time-search" aria-label="Search at a specific time...">
-        </fieldset>
-
-        <div class="map">Map</div>
-      </section>
-
-      <section class="station-list-section">
-        <fieldset class="bike-search-controls">
-          <label class="electric-bikes-only-label">
-            <input type="checkbox" name="electric-bikes-only">
-            🗲🗲🗲
-          </label>
-
-          <label class="min-battery-level-label">
-            🔋
-            <input type="range" name="min-battery-level" min="0" max="100" value="0">
-          </label>
-        </fieldset>
-
-        <ul class="station-list">
-          <li class="station" aria-expanded="false">
-            <header class="name">Welcome Park, NPS</header>
-            <span class="distance" title="Station distance from map center">0.2 mi</span>
-            <span class="available-bikes" title="Number of suitable bikes available at the station">4 bikes</span>
-            <span class="available-docks" title="Number of open docks available at the station">8 docks</span>
-            <span class="next-drop-off-est" title="Approximate time between drop offs of suitable bikes">(~10 min)</span>
-            <span class="next-pick-up-est" title="Approximate time between docks opening up">(~15 min)</span>
-          </li>
-          <li class="station" aria-expanded="true">
-            <header class="name">Long Station Name To See How It Behaves With Text Wrapping</header>
-            <span class="distance" title="Station distance from map center">0.2 mi</span>
-            <span class="available-bikes" title="Number of suitable bikes available at the station">4 bikes</span>
-            <span class="available-docks" title="Number of open docks available at the station">8 docks</span>
-            <span class="next-drop-off-est" title="Approximate time between drop offs of suitable bikes">(~10 min)</span>
-            <span class="next-pick-up-est" title="Approximate time between docks opening up">(~15 min)</span>
-
-            <div class="details">
-              <div class="chart drop-off-time-chart">Distribution of time between drop-offs</div>
-              <div class="chart pick-up-time-chart">Distribution of time between pick-ups</div>
-            </div>
-          </li>
-          <li class="station" aria-expanded="false">
-            <header class="name">Welcome Park, NPS</header>
-            <span class="distance" title="Station distance from map center">0.2 mi</span>
-            <span class="available-bikes" title="Number of suitable bikes available at the station">4 bikes</span>
-            <span class="available-docks" title="Number of open docks available at the station">8 docks</span>
-            <span class="next-drop-off-est" title="Approximate time between drop offs of suitable bikes">(~10 min)</span>
-            <span class="next-pick-up-est" title="Approximate time between docks opening up">(~15 min)</span>
-          </li>
-          <li class="station" aria-expanded="false">
-            <header class="name">Welcome Park, NPS</header>
-            <span class="distance" title="Station distance from map center">0.2 mi</span>
-            <span class="available-bikes" title="Number of suitable bikes available at the station">4 bikes</span>
-            <span class="available-docks" title="Number of open docks available at the station">8 docks</span>
-            <span class="next-drop-off-est" title="Approximate time between drop offs of suitable bikes">(~10 min)</span>
-            <span class="next-pick-up-est" title="Approximate time between docks opening up">(~15 min)</span>
-          </li>
-        </ul>
-      </section>
-    </main>
-  </body>
 </html>
+
+
+
