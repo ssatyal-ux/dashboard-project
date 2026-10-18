@@ -29,3 +29,48 @@ function getCategory(key) {
   }
 }
 
+//I got this mainly from the Week 4 and Week 6 bikeshare examples, then pasted it on Claude to fill in gaps + fix code
+
+// Loads the Chicago community area data
+async function loadCcaData() {
+  const response = await fetch('data/cca_full.json');
+  const collection = await response.json();
+  const areas = collection.features;
+
+  // Loops through each community area's properties
+  for (const area of areas) {
+    const props = area.properties;
+
+    // Gets the area name, rounds population and income, and calculates businesses per 1,000 residents
+    const name = props.GEOG ?? props.community;;
+    const population = Math.round(props.TOT_POP);
+    const income = props.MEDINC === null ? null : Math.round(props.MEDINC);
+    const density = props.Point_Count / props.TOT_POP * 1000;
+
+     // Adds the calculated values to the area's properties
+    Object.assign(props, { name, population, income, density });
+  }
+
+  // Sets the starting citywide business totals to zero
+  const cityTotals = { all: 0 };
+  for (const category of CATEGORIES) {
+    cityTotals[category.key] = 0;
+  }
+
+
+  // Adds up all businesses across Chicago's community areas
+  for (const area of areas) {
+    cityTotals.all += area.properties.Point_Count;
+     // Adds up businesses in each category, skipping the overall total
+    for (const category of CATEGORIES) {
+      if (category.key !== 'all') {
+        cityTotals[category.key] += area.properties[category.key];
+      }
+    }
+  }
+// Returns the community areas and citywide business totals
+  return { areas, cityTotals };
+}
+
+// Makes these values and functions available to other JavaScript files
+export { CATEGORIES, LOW_COUNT, getCategory, loadCcaData };
