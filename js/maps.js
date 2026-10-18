@@ -1,6 +1,7 @@
 //importing required information from data.js (where the analysis is)
 //importing colors for the maps to be displayed
-// Claude and ChatGPT explained what needs to be done. Initial coding done by self, with explanations, cleaning and debugging by Claude and ChatGPT.
+// Claude and ChatGPT explained what needs to be done. Initial coding done by self, with explanations, 
+// cleaning and debugging and suggesting what needs to be done is by Claude and ChatGPT both.
 import { getCategory } from './data.js';
 import { getClasses, getColor, getValue } from './colors.js';
 
@@ -63,4 +64,77 @@ function initMap(el, areas, events) {
         });
         events.dispatchEvent(event);
     });
+
+    //working on the legend now
+    //keeping reference to its div to rewrite with changing category
+    const legend = L.control({ position: 'bottomright' });
+    let legendDiv = null;
+
+    // Creates the bottom-right map legend with accessibility features,
+    // adapted from Week 2 and 3 examples.
+    legend.onAdd = () => {
+        legendDiv = L.DomUtil.create('div', 'legend');
+        legendDiv.id = 'map_legend';
+        legendDiv.setAttribute('role', 'region');
+        legendDiv.setAttribute('aria-roledescription', 'Legend');
+        legendDiv.setAttribute('aria-labelledby', 'legend-title');
+        legendDiv.setAttribute('tabindex', '0');
+        updateLegend();
+        return legendDiv;
+    };
+
+    // Adds the legend title, colors and labels and updates them when
+    // the dropdown changes, adapted from Week 2 and 4 examples.
+    function updateLegend() {
+        const title = category.key === 'all' ?
+            'Licenses per 1,000 residents' :
+            `${category.label}: share vs. citywide`;
+        const classes = getClasses(category.key);
+
+        legendDiv.innerHTML = `
+            <h2 id="legend-title">${title}</h2>
+            <ul class="legend-entries">
+                ${classes.map((cls) => `
+                    <li class="legend-entry">
+                        <span class="legend-icon" style="background-color: ${cls.color};"></span>
+                        <span>${cls.label}</span>
+                    </li>
+                `).join('')}
+            </ul>
+        `;
+    }
+
+    //adding the legend to the map
+    legend.addTo(map);
+
+    // Updates the selected business type, map colors and legend when
+    //  the dropdown changes, adapted from Week 2 and 6 examples.
+    events.addEventListener('categorychanged', (evt) => {
+        category = getCategory(evt.detail.categoryKey);
+        areasLayer.resetStyle();
+        updateLegend();
+    });
+
+    // Highlights the selected area and flies to it if picked from the list, 
+    // adapted from Week 2, 4 and 6 examples, with maxZoom set to 12 to avoid 
+    // zooming in too close.
+    events.addEventListener('areaselected', (evt) => {
+        selectedAreaNumber = evt.detail.areaNumber;
+        areasLayer.resetStyle();
+
+        if (evt.detail.fromList) {
+            areasLayer.eachLayer((layer) => {
+                if (layer.feature.properties.area_numbe === selectedAreaNumber) {
+                    map.flyToBounds(layer.getBounds(), {
+                        duration: 0.75,
+                        maxZoom: 12,
+                    });
+                }
+            });
+        }
+    });
+
+    return map;
 }
+
+export { initMap };
