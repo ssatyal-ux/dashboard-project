@@ -1,7 +1,9 @@
+/* credit: styling inspiration from past sample of Xiaofan Lu - Philadelphia Crime incidents. Inclusing naming conventions some reference to professor Mjumbe Poe's code, and assistance from Chat GPT*/
+
 /* html is for the whole page and overall appearance*/
 html {
   background-color: #000000;
-  font-family:  IBM Plex 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-family: "IBM Plex Sans", "Gill Sans", "Gill Sans MT", 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   color: #ffffff;
 }
 
@@ -55,6 +57,7 @@ main{
   margin: 0px;
   box-sizing: border-box;
   overflow: auto;
+  min-height: 0;
 }
 
 /*styling for section of map - our main display*/
@@ -77,6 +80,8 @@ box-sizing: border-box;
 .section-title {
   padding-bottom:16px;
   font-weight: 500;
+  margin:0; /*removing default space*/
+  color: #ffffff /*color white - to separate from main title*/
 }
 
 /* for panel on the left hand side */
@@ -103,7 +108,16 @@ box-sizing: border-box;
 
 /*for when the dropdown menu is clicked*/
 .category-select:focus {
-  outline: 2px solid #0052ce
+  outline: 2px solid #41b6e6
+}
+
+/*labels before dropdown and style*/
+label {
+  display: block; /*own line above input*/
+  margin: 12px 0 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #e5e5e5;
 }
 
 /*radio button for selection*/
