@@ -33,7 +33,7 @@ function getCategory(key) {
 
 // Loads the Chicago community area data
 async function loadCcaData() {
-  const response = await fetch('data/cca_full.json');
+  const response = await fetch('data/cca_final.json');
   const collection = await response.json();
   const areas = collection.features;
 
