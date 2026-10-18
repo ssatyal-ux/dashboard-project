@@ -19,3 +19,13 @@ const CATEGORIES = [
 ];
 
 const LOW_COUNT =5; //only because some businesses may have very little to be a generalizable concept
+
+// Finds and returns the category with the matching key
+function getCategory(key) {
+  for (const category of CATEGORIES) {
+    if (category.key === key) {
+      return category;
+    }
+  }
+}
+
