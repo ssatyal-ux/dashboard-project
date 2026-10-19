@@ -1,0 +1,198 @@
+/* credit: styling inspiration from past sample of Xiaofan Lu - Philadelphia Crime incidents. Including naming conventions,
+ some reference to professor Mjumbe Poe's code,
+ and assistance from Chat GPT and Claude */
+
+/* colors are from the City of Chicago Design System (CDS) where possible:
+   #000    black (page background)
+   #161616 near-black (header, side panel and legend)
+   #262626 dark gray (dropdown box)
+   #2f2f2f / #5b616b dark grays (lines and borders)
+   #e4002b Star Red (thin accent line under the header)
+   #41b6e6 Flag Blue (focus outlines)
+   #fff    white (titles)
+   #dce4ef Gray Cool Light (softer text) */
+
+/* html is for the whole page and overall appearance */
+html {
+  background-color: #d6d7d9;
+  font-family: "IBM Plex Sans", "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  color: #494440;
+}
+
+body {
+  display: grid; /* to line up the children */
+  grid-template-columns: 40% 1fr; /*used claude for this*/
+  grid-template-rows: auto 1fr;
+  gap: 12px; /* space between children */
+  margin: 0; /* removing white edge of browser around page */
+  padding: 20px; /* room inside page edge space before content */
+  height: 100vh; /* filling in the screen fully */
+  box-sizing: border-box; /* padding and border go inside */
+}
+
+/* main title */
+h1 {
+  font-size: 39px;
+  font-weight: 900;
+  margin: 0;
+  padding: 0;
+}
+
+/* paragraph */
+p {
+  font-size: 16px;
+  font-weight: 400;
+  color: #494440;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5; /* a little more space between lines so text is easier to read */
+}
+
+/* working on the header now - title */
+header {
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 20px;
+  background-color: #e4e2e0;
+  color: #494440;
+  border:2px solid #494440;
+  border-bottom: 4px solid #494440; /* thin Chicago red accent line */
+}
+
+/* main section */
+main {
+  flex: 1;
+  display: contents;
+  flex-direction: row;
+  gap: 12px;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  overflow: auto;
+  min-height: 0;
+}
+
+/* styling for section of map - our main display */
+#map {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  flex: 1;
+  max-width: 900px;
+  border: 2px solid #494440;
+  padding: 0;
+  margin: 0;
+  background-color: #494440;
+}
+
+/* separate block in side panel */
+.section {
+  border-bottom: 1px solid #aeb0b5; /* line to separate */
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+/* heading inside the section */
+.section-title {
+  padding-bottom: 12px;
+  font-weight: 500;
+  margin: 0; /* removing default space */
+  color: #fff; /* color white - to separate from main title */
+}
+
+/* for panel on the left hand side */
+.controls {
+   grid-column: 1; 
+  border: 2px solid #494440;
+  background-color: #e4e2e0;
+  overflow: auto; /* allowing to let this panel since this section can be long */
+}
+
+/* styling the dropdown menu */
+.category-select {
+  width: 100%;
+  height: 42px;
+  border: 0; /* no rounding */
+  outline: 1px solid #494440; /* visible edge so the box doesn't disappear into the panel */
+  border-radius: 0;
+  background-color: #494440;
+  color: #dce4ef;
+  text-indent: 8px;
+  font-size: 14px;
+  cursor: pointer; /* mouse turns into a hand */
+}
+
+/* for when the dropdown menu is clicked */
+.category-select:focus {
+  outline: 2px solid #494440;
+}
+
+/* labels before dropdown and style */
+label {
+  display: block; /* own line above input */
+  margin: 12px 0 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #dce4ef;
+}
+
+/* radio button for selection */
+.radio {
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* vertical line up */
+  margin-bottom: 8px; /* space before next selection option */
+}
+
+/* label for the radio button */
+.radio label {
+  font-size: 14px;
+  font-weight: 300;
+  margin: 0;
+  padding: 0;
+}
+
+/* map legend */
+.legend {
+  max-width: 220px;
+  padding: 10px 12px;
+  background-color: #e4e2e0; /* near-black, slightly see-through */
+  border: 1px solid #494440;
+  color: #494440;
+  font-family: inherit;
+}
+
+/* legend title (e.g. "Licenses per 1,000 residents") */
+.legend h2 {
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* removing bullet points and default spacing from the legend list */
+.legend-entries {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* aligning the color square and label side by side with spacing between
+   rows - Week 4 flexbox */
+.legend-entry {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 2px 0;
+}
+
+/* keeping the color square from shrinking and adding a
+   light border so dark colors stay visible */
+.legend-icon {
+  display: inline-block;
+  flex-shrink: 3;
+  width: 10px;
+  height: 10px;
+  border: 1px solid #494440;
+}
