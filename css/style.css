@@ -3,14 +3,7 @@
  and assistance from Chat GPT and Claude */
 
 /* colors are from the City of Chicago Design System (CDS) where possible:
-   #000    black (page background)
-   #161616 near-black (header, side panel and legend)
-   #262626 dark gray (dropdown box)
-   #2f2f2f / #5b616b dark grays (lines and borders)
-   #e4002b Star Red (thin accent line under the header)
-   #41b6e6 Flag Blue (focus outlines)
-   #fff    white (titles)
-   #dce4ef Gray Cool Light (softer text) */
+
 
 /* html is for the whole page and overall appearance */
 html {
@@ -98,9 +91,10 @@ main {
 .section-title {
   padding-bottom: 12px;
   font-weight: 500;
-  margin: 0; /* removing default space */
-  color: #fff; /* color white - to separate from main title */
+  margin: 0;
+  color: #494440;
 }
+
 
 /* for panel on the left hand side */
 .controls {
@@ -131,12 +125,14 @@ main {
 
 /* labels before dropdown and style */
 label {
-  display: block; /* own line above input */
-  margin: 12px 0 6px;
+  display: block;
+  margin: 0;
+  padding: 4px 0;
   font-size: 14px;
   font-weight: 500;
-  color: #dce4ef;
+  color: #494440;
 }
+
 
 /* radio button for selection */
 .radio {
@@ -196,3 +192,50 @@ label {
   height: 10px;
   border: 1px solid #494440;
 }
+
+/*removing ther browsers default box around each group name*/
+fieldset {
+  border: 0;
+  margin: 0 0 16px;
+  padding: 5;
+}
+
+/* group headings styling for legends of these groups and not the whole doc*/
+legend {
+  padding: 5 5 8px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* text that explains what the map is showing*/
+ .help-text {
+  color: #5b616b;
+  padding: 0 0 16px;
+}
+
+/*lists with no bullets - copied from Week 6*/
+#category-list,
+.area-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/*search box - from week 6*/
+.search {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.5em;
+  margin-bottom: 1em;
+}
+
+/*scrolling list*/
+.area-list {
+  height: 180px;
+  overflow-y: scroll;
+}
+
+
+
+
+
