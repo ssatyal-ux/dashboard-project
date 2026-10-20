@@ -52,6 +52,7 @@ function getColor(props, category) {
       return cls.color;
     }
   }
+  
 }
 
 // Lets other files (like map.js) use these.

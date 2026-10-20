@@ -8,14 +8,14 @@
 
 const CATEGORIES = [
   { key: 'all', lqKey: null, label: 'All businesses (density)' },
-  { key: 'Food_and_Beverage', lqKey: 'LQ_Food', label: 'Food & beverage' },
-  { key: 'Retail_and_General_Business', lqKey: 'LQ_Retail', label: 'Retail & general business' },
-  { key: 'Alcohol_and_Entertainment', lqKey: 'LQ_Alcohol', label: 'Alcohol & entertainment' },
-  { key: 'Health_and_Professional_Services', lqKey: 'LQ_Health', label: 'Health & professional services' },
-  { key: 'Transportation_and_Automotive', lqKey: 'LQ_Transport', label: 'Transportation & automotive' },
-  { key: 'Industrial_and_Manufacturing', lqKey: 'LQ_Industrial', label: 'Industrial & manufacturing' },
-  { key: 'Housing_and_Property', lqKey: 'LQ_Housing', label: 'Housing & property' },
-  { key: 'Events_and_Recreation', lqKey: 'LQ_Events', label: 'Events & recreation' },
+  { key: 'Food_and_Beverage', lqKey: 'LQ_Food', label: 'Food & beverage (Location Quotient)' },
+  { key: 'Retail_and_General_Business', lqKey: 'LQ_Retail', label: 'Retail & general business (Location Quotient)' },
+  { key: 'Alcohol_and_Entertainment', lqKey: 'LQ_Alcohol', label: 'Alcohol & entertainment (Location Quotient)' },
+  { key: 'Health_and_Professional_Services', lqKey: 'LQ_Health', label: 'Health & professional services (Location Quotient)' },
+  { key: 'Transportation_and_Automotive', lqKey: 'LQ_Transport', label: 'Transportation & automotive (Location Quotient)' },
+  { key: 'Industrial_and_Manufacturing', lqKey: 'LQ_Industrial', label: 'Industrial & manufacturing (Location Quotient)' },
+  { key: 'Housing_and_Property', lqKey: 'LQ_Housing', label: 'Housing & property (Location Quotient)' },
+  { key: 'Events_and_Recreation', lqKey: 'LQ_Events', label: 'Events & recreation (Location Quotient)' },
 ];
 
 const LOW_COUNT =5; //only because some businesses may have very little to be a generalizable concept

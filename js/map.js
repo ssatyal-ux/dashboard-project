@@ -5,6 +5,7 @@
 // cleaning and debugging and suggesting what needs to be done is by Claude and ChatGPT both.
 import { getCategory } from './data.js';
 import { getClasses, getColor, getValue } from './colors.js';
+import { drawChart } from './area_chart.js';
 
 // comes from week 6 code
 // builds the map and remembers which business
@@ -16,25 +17,23 @@ function initMap(el, areas, events) {
   // creating a Leaflet map inside el and allowing zoom levels between whole numbers for a smoother experience
   const map = L.map(el, { zoomSnap: 0 });
 
-  // adding a dark gray background map, setting the maximum zoom to 16 (the
-  // deepest zoom this Esri basemap has tiles for) - also got this from Claude
+  // adding a light gray background map - also got this from Claude
   // for the story maps assignment
-L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-  maxZoom: 22,
-  opacity: 0.8, // lets the warm gray page color show through so the map matches the panel
-  attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
-}).addTo(map);
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 22,
+    opacity: 0.8, // lets the warm gray page color show through so the map matches the panel
+    attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+  }).addTo(map);
 
   // Based on the Week 2 calcFeatureStyle function and the Week 3 choropleth style exercise
   // This function colors each area based on the selected business category, makes the fill
-  // 75% opaque, and gives the selected area a thick black border while other areas have thin
-  // gray borders.
+  // 75% opaque, and gives the selected area a thick border while other areas have thin ones.
   function styleArea(feature) {
     const isSelected = feature.properties.area_numbe === selectedAreaNumber;
     return {
       fillColor: getColor(feature.properties, category),
       fillOpacity: 0.75,
-      color: isSelected ? '#494440' : '#494440',
+      color: isSelected ? '#e59393' : '#494440',
       weight: isSelected ? 4 : 1,
     };
   }
@@ -52,9 +51,7 @@ L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_L
       `${value.toFixed(2)}x the citywide share`;
     return `<strong>${props.name}</strong><br>${valueText}`;
   });
-
-  // Zooms the map to fit all of Chicago (Week 4 and Week 6 fitBounds).
-  map.setView([41.84, -87.65], 10.8);
+map.setView([41.84, -87.65], 10.8);
 
   // When an area is clicked, tells the rest of the app which one was picked.
   // Based on the Week 6 dom_manipulation CustomEvent and event bus.
@@ -66,9 +63,40 @@ L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_L
     events.dispatchEvent(event);
   });
 
+  // working on the help text now - a box in the top-right corner of the map
+  // that explains what the colors mean, built the same way as the legend
+  const helpControl = L.control({ position: 'topright' });
+  let helpDiv = null;
+
+  helpControl.onAdd = () => {
+    helpDiv = L.DomUtil.create('div', 'legend map-help');
+    helpDiv.id = 'map-help';
+    // same accessibility attributes as the legend (Week 2 accessibility example)
+    helpDiv.setAttribute('role', 'region');
+    helpDiv.setAttribute('aria-roledescription', 'Map help');
+    helpDiv.setAttribute('aria-label', 'What the map colors mean');
+    updateHelpText();
+    return helpDiv;
+  };
+
+  // Rewrites the help text for the selected business type.
+  function updateHelpText() {
+    if (category.key === 'all') {
+      helpDiv.textContent = 'Showing all businesses. Darker areas have more ' +
+        'business licenses per 1,000 residents.';
+    } else {
+      helpDiv.textContent = `Showing ${category.label.toLowerCase()}. Darker ` +
+        'gray areas have a larger share than the city as a whole; red areas ' +
+        'have a smaller share, and the darkest red areas have none.';
+    }
+  }
+
+  // adding the help text to the map
+  helpControl.addTo(map);
+
   // working on the legend now
   // keeping reference to its div to rewrite with changing category
-  const legend = L.control({ position: 'bottomright' });
+  const legend = L.control({ position: 'topright' });
   let legendDiv = null;
 
   // Creates the bottom-right map legend with accessibility features,
@@ -108,31 +136,51 @@ L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_L
   // adding the legend to the map
   legend.addTo(map);
 
-  // Updates the selected business type, map colors and legend when
-  // the dropdown changes, adapted from Week 2 and 6 examples.
+  // working on the chart box now - built the same way as the legend, in the
+  // bottom-left corner of the map. The chart is drawn after the box is added
+  // to the map so Chart.js can measure the box's size.
+  const chartControl = L.control({ position: 'topright' });
+  let chartDiv = null;
+
+  chartControl.onAdd = () => {
+    chartDiv = L.DomUtil.create('div', 'legend map-chart');
+    chartDiv.id = 'map-chart';
+    // same accessibility attributes as the legend (Week 2 accessibility example)
+    chartDiv.setAttribute('role', 'region');
+    chartDiv.setAttribute('aria-roledescription', 'Chart');
+    chartDiv.setAttribute('aria-labelledby', 'chart-title');
+    chartDiv.setAttribute('tabindex', '0');
+    return chartDiv;
+  };
+
+  chartControl.addTo(map);
+  drawChart(chartDiv, areas, category);
+
+  // Updates the selected business type, map colors, legend, help text and
+  // chart when the business type changes, adapted from Week 2 and 6 examples.
   events.addEventListener('categorychanged', (evt) => {
     category = getCategory(evt.detail.categoryKey);
     areasLayer.resetStyle();
     updateLegend();
+    updateHelpText();
+    drawChart(chartDiv, areas, category);
   });
 
-  // Highlights the selected area and flies to it if picked from the list,
-  // adapted from Week 2, 4 and 6 examples, with maxZoom set to 12 to avoid
-  // zooming in too close.
+  // Highlights the selected area and flies to it, whether it was picked
+  // from the list or clicked on the map, adapted from Week 2, 4 and 6
+  // examples, with maxZoom set to 12 to avoid zooming in too close.
   events.addEventListener('areaselected', (evt) => {
     selectedAreaNumber = evt.detail.areaNumber;
     areasLayer.resetStyle();
 
-    if (evt.detail.fromList) {
-      areasLayer.eachLayer((layer) => {
-        if (layer.feature.properties.area_numbe === selectedAreaNumber) {
-          map.flyToBounds(layer.getBounds(), {
-            duration: 0.75,
-            maxZoom: 12,
-          });
-        }
-      });
-    }
+    areasLayer.eachLayer((layer) => {
+      if (layer.feature.properties.area_numbe === selectedAreaNumber) {
+        map.flyToBounds(layer.getBounds(), {
+          duration: 0.75,
+          maxZoom: 12,
+        });
+      }
+    });
   });
 
   return map;

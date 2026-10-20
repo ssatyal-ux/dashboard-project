@@ -1,6 +1,7 @@
 /* credit: styling inspiration from past sample of Xiaofan Lu - Philadelphia Crime incidents. Including naming conventions,
  some reference to professor Mjumbe Poe's code,
- and assistance from Chat GPT and Claude */
+ and assistance from Chat GPT and Claude.
+ Only CSS properties used in the course lecture examples (weeks 2-8). */
 
 /* colors are from the City of Chicago Design System (CDS) where possible:
    warm gray light #e4e2e0, warm gray dark #494440, gray lighter #d6d7d9,
@@ -13,21 +14,34 @@ html {
   color: #494440;
 }
 
+/* removing the white edge of the browser around the page, and keeping the
+   page fixed to the screen - only the side panel scrolls inside its box */
 body {
-  display: grid; /* to line up the children */
-  grid-template-columns: 40% 1fr; /* used claude for this */
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* page layout - a grid with named areas, like the Week 6 chart example:
+   title across the top, controls on the left, map filling the right side.
+   height 100vh with border-box makes everything fit exactly in one screen */
+main {
+  display: grid;
+  grid-template-areas:
+    "header header"
+    "controls map";
+  grid-template-columns: 25% 1fr;
   grid-template-rows: auto 1fr;
-  gap: 12px; /* space between children */
-  margin: 0; /* removing white edge of browser around page */
-  padding: 20px; /* room inside page edge space before content */
-  height: 100vh; /* filling in the screen fully */
-  box-sizing: border-box; /* padding and border go inside */
+  gap: 12px;
+  padding: 12px;
+  height: 100vh;
+  box-sizing: border-box;
 }
 
 /* main title */
 h1 {
-  font-size: 39px;
-  font-weight: 900;
+  font-size: 32px;
+  font-weight: 700;
   margin: 0;
   padding: 0;
 }
@@ -39,89 +53,56 @@ p {
   color: #494440;
   margin: 0;
   padding: 0;
-  line-height: 1.5; /* a little more space between lines so text is easier to read */
 }
 
-/* working on the header now - title */
+/* header box with the title */
 header {
-  grid-column: 1;
+  grid-area: header;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
-  gap: 8px;
-  padding: 16px 20px;
+  padding: 6px 20px;
   background-color: #e4e2e0;
   color: #494440;
   border: 2px solid #494440;
-  border-bottom: 4px solid #494440; /* thicker bottom line under the title */
+  border-bottom: 4px solid #494440; /* thicker line under the title */
 }
 
-/* main section - display: contents lets the panel and map sit
-   directly in the body grid */
-main {
-  display: contents;
-}
-
-/* styling for section of map - our main display */
+/* map - our main display; min-height 0 lets it shrink to its grid row */
 #map {
-  grid-column: 2;
-  grid-row: 1 / 3;
-  max-width: 900px;
+  grid-area: map;
   border: 2px solid #494440;
   padding: 0;
   margin: 0;
+  min-height: 0;
   background-color: #494440;
+}
+
+/* panel on the left hand side; min-height 0 lets it scroll inside its
+   grid row instead of making the page taller */
+.controls {
+  grid-area: controls;
+  border: 2px solid #494440;
+  background-color: #e4e2e0;
+  min-height: 0;
+  overflow-y: scroll;
 }
 
 /* separate block in side panel */
 .section {
-  border-bottom: 1px solid #aeb0b5; /* line to separate */
-  padding: 16px;
+  padding: 12px 16px;
   box-sizing: border-box;
 }
 
 /* heading inside the section */
 .section-title {
-  padding-bottom: 12px;
+  padding-bottom: 8px;
   font-weight: 500;
   margin: 0;
   color: #494440;
 }
 
-/* for panel on the left hand side, with the skyline photo behind
-   a see-through warm gray layer so the text stays readable */
-.controls {
-  grid-column: 1;
-  border: 2px solid #494440;
-  background-color: #e4e2e0;
-  background-image:
-    linear-gradient(#e4e2e0b3, #e4e2e0b3),
-    url("../img/chicago-skyline.png");
-  background-size: cover;
-  background-position: center;
-  overflow: auto; /* adds a scrollbar since this panel can get long */
-}
-
-/* styling the dropdown menu */
-.category-select {
-  width: 100%;
-  height: 42px;
-  border: 0;
-  outline: 1px solid #494440; /* visible edge so the box doesn't disappear into the panel */
-  border-radius: 0; /* no rounding */
-  background-color: #494440;
-  color: #ffffff;
-  text-indent: 8px;
-  font-size: 14px;
-  cursor: pointer; /* mouse turns into a hand */
-}
-
-/* for when the dropdown menu is clicked */
-.category-select:focus {
-  outline: 2px solid #494440;
-}
-
-/* labels before dropdown and style */
+/* labels before inputs */
 label {
   display: block;
   margin: 0;
@@ -131,37 +112,67 @@ label {
   color: #494440;
 }
 
-/* radio button for selection */
-.radio {
-  display: flex;
-  flex-direction: row;
-  align-items: center; /* vertical line up */
-  margin-bottom: 8px; /* space before next selection option */
+/* removing the browser's default box around each group */
+fieldset {
+  border: 0;
+  margin: 0 0 12px;
+  padding: 0;
 }
 
-/* label for the radio button */
-.radio label {
-  font-size: 14px;
-  font-weight: 300;
+/* group headings inside fieldsets (not the map legend) */
+legend {
+  padding: 0 0 8px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* lists with no bullets - from Week 6 */
+#category-list,
+.area-list {
+  list-style-type: none;
   margin: 0;
   padding: 0;
 }
 
-/* map legend and help text boxes */
+/* space between the buttons in both lists in the panel */
+.controls li {
+  margin-bottom: 6px;
+}
+
+/* search box - from Week 6 */
+.search {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+/* scrolling list of community areas */
+.area-list {
+  height: 180px;
+  overflow-y: scroll;
+}
+
+/* boxes on the map: legend, help text and chart */
 .legend {
-  max-width: 220px;
-  padding: 10px 12px;
+  padding: 8px 12px;
   background-color: #e4e2e0; /* same warm gray as the panels */
   border: 1px solid #494440;
   color: #494440;
   font-family: inherit;
 }
 
-/* legend title (e.g. "Licenses per 1,000 residents") */
+/* titles inside the map boxes (e.g. "Licenses per 1,000 residents") */
 .legend h2 {
   margin: 0 0 6px;
   font-size: 14px;
   font-weight: 500;
+}
+
+/* chart title always takes two lines of space, so the chart box
+   stays the same size no matter how long the business type name is */
+.map-chart h2 {
+  height: 40px;
 }
 
 /* removing bullet points and default spacing from the legend list */
@@ -171,8 +182,7 @@ label {
   padding: 0;
 }
 
-/* aligning the color square and label side by side with spacing between
-   rows - Week 4 flexbox */
+/* color square and label side by side - Week 4 flexbox */
 .legend-entry {
   display: flex;
   align-items: center;
@@ -180,69 +190,55 @@ label {
   margin: 2px 0;
 }
 
-/* keeping the color square from shrinking and adding a
-   border so light colors stay visible */
+/* color square with a border so light colors stay visible;
+   min-width keeps it from being squeezed by long labels */
 .legend-icon {
   display: inline-block;
-  flex-shrink: 0;
   width: 15px;
+  min-width: 15px;
   height: 15px;
   border: 1px solid #494440;
 }
 
-/* help text box on the map that explains the colors */
+/* help text, chart and legend boxes on the map - same width so they line up */
+.map-help,
+.map-chart,
+#map-legend {
+  width: 300px;
+}
+
+/* smaller text in the help box */
 .map-help {
-  max-width: 260px;
   font-size: 13px;
   font-weight: 500;
-  line-height: 1.4;
 }
 
-/* removing the browser's default box around each group */
-fieldset {
-  border: 0;
-  margin: 0 0 16px;
-  padding: 5px;
+/* small screens: stack title, map and controls in one column and let the
+   page scroll (media query from the Week 2 accessibility example) */
+@media screen and (max-width: 425px) {
+  body {
+    overflow-y: scroll;
+  }
+
+  main {
+    grid-template-areas:
+      "header"
+      "map"
+      "controls";
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 80vh auto;
+    height: auto;
+  }
+
+  .map-help,
+  .map-chart,
+  #map-legend {
+    width: 200px;
+  }
 }
 
-/* group headings styling for legends of these groups and not the whole doc */
-legend {
-  padding: 5px 5px 8px;
-  font-size: 16px;
-  font-weight: 500;
-}
-
-/* lists with no bullets - copied from Week 6 */
-#category-list,
-.area-list {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-/* space between the buttons in both lists */
-#category-list li,
-.area-list li {
-  margin-bottom: 8px;
-}
-
-/* search box - from week 6 */
-.search {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 0.5em;
-  margin-bottom: 1em;
-}
-
-/* scrolling list */
-.area-list {
-  height: 180px;
-  overflow-y: scroll;
-}
-
-/* credit line for the background photo */
-.photo-credit {
-  font-size: 12px;
-  margin: 0;
-  padding: 8px 16px;
+/* hides the browser's focus box around a map area when it's selected
+   (not from lecture - suggested by Claude) */
+#map path:focus {
+  outline: none;
 }

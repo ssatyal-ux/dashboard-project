@@ -16,7 +16,7 @@
       crossorigin=""
     >
 
-    <!-- linking the font used in style.css -->
+    <!-- linking the font used in style.css (Week 4 scrollytelly) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -29,28 +29,25 @@
   </head>
 
   <body>
-    <!-- title and description of the project to explain what this is -->
-    <header>
-      <h1>Chicago Business Mix</h1>
-    </header>
-
-    <!-- adding the main side panel for the dashboard -->
+    <!-- main holds the whole page grid: title, side panel and map (Week 6 layout) -->
     <main>
-      <aside class="controls">
-        <!-- working on the section that controls.js fills in, in the side panel -->
-        <section class="section" aria-labelledby="explore-title">
-          <h2 id="explore-title" class="section-title">Explore</h2>
+      <!-- title of the project -->
+      <header>
+        <h1>Chicago Business Mix</h1>
+      </header>
 
-          <!-- titled group with an empty list that controls.js fills in - from week 6 -->
+      <!-- side panel that controls.js fills in -->
+      <div class="controls">
+        <section class="section">
+          <h2 class="section-title">Explore</h2>
+
+          <!-- titled group with an empty list that controls.js fills in - from Week 6 -->
           <fieldset id="categories">
             <legend>Type of Business</legend>
             <ul id="category-list"></ul>
           </fieldset>
 
-          <!-- empty paragraph for controls.js to write into - basic HTML, text set with textContent from week 8 -->
-          <p id="category-help" class="help-text"></p>
-
-          <!-- search box and empty list - from week 6 -->
+          <!-- search box and empty list - from Week 6 -->
           <fieldset id="areas">
             <legend>Community Areas</legend>
             <input
@@ -62,9 +59,10 @@
             <ul id="area-list" class="area-list"></ul>
           </fieldset>
         </section>
-      </aside>
+      </div>
 
-      <!-- map container -->
+      <!-- map container; the legend, help text and chart are added
+           as boxes on the map by map.js (Week 2 accessibility attributes) -->
       <div
         id="map"
         role="region"

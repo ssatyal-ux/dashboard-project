@@ -1,15 +1,17 @@
 /* getting the list of business categories to make a button for each one */
 import { CATEGORIES } from './data.js';
 
-// gets the panel, data and event bus from main.js, then finds the 3 empty spots to fill (Week 6)
+// gets the panel, data and event bus from main.js, then finds the 3 empty spots
+// to fill (Week 6 dom_manipulation hoods_select.js)
 function initControls(el, areas, events) {
   const categoryListEl = el.querySelector('#category-list');
   const searchEl = el.querySelector('.search');
   const areaListEl = el.querySelector('#area-list');
 
   // makes a button for each business type that tells the map to recolor when clicked
-  // (loop and event bus: Week 6, buttons and clicks: Week 8)
-  // the map, legend and help text on the map all update from this one event
+  // (createElement, innerHTML, CustomEvent and event bus: Week 6 hoods_select.js;
+  // buttons and 'click' listeners: Week 6 user_events; arrow-function listeners: Week 2)
+  // the map, legend, help text and chart on the map all update from this one event
   for (const category of CATEGORIES) {
     const item = document.createElement('li');
     item.innerHTML = `<button type="button">${category.label}</button>`;
@@ -19,11 +21,12 @@ function initControls(el, areas, events) {
       });
       events.dispatchEvent(event);
     });
-    categoryListEl.appendChild(item);
+    categoryListEl.append(item);
   }
 
-  // makes a button for each community area that tells the map to zoom to it when clicked,
-  // and saves them for searching later (saving list items: Week 6, buttons and clicks: Week 8)
+  // makes a button for each community area that tells the map to zoom to it when
+  // clicked, and saves them for searching later (saving list items in an object:
+  // Week 6 hoods_select.js; buttons and clicks: Week 6 user_events)
   const areaListItems = {};
   for (const area of areas) {
     const props = area.properties;
@@ -38,7 +41,8 @@ function initControls(el, areas, events) {
     areaListItems[props.area_numbe] = item;
   }
 
-  // clears the list and shows the community areas in A to Z order (copied from Week 6 populateList)
+  // clears the list and shows the community areas in A to Z order
+  // (copied from Week 6 hoods_select.js populateList)
   function populateList(areasToShow) {
     areaListEl.innerHTML = '';
 
@@ -52,8 +56,8 @@ function initControls(el, areas, events) {
   }
   populateList(areas);
 
-  // Handles the search on every keystroke using filter, toLowerCase, and includes,
-  // copied from Week 6 hoods_select.js.
+  // handles the search on every keystroke using filter, toLowerCase and includes
+  // (copied from Week 6 hoods_select.js handleSearchInput)
   function handleSearchInput() {
     const filteredAreas = areas.filter((area) => {
       const searchValue = searchEl.value.toLowerCase();
@@ -66,5 +70,5 @@ function initControls(el, areas, events) {
   searchEl.addEventListener('input', handleSearchInput);
 }
 
-// export so main.js can use it: Week 6 hoods_select.js
+// export so main.js can use it (Week 6 hoods_select.js)
 export { initControls };
