@@ -3,7 +3,8 @@
  and assistance from Chat GPT and Claude */
 
 /* colors are from the City of Chicago Design System (CDS) where possible:
-
+   warm gray light #e4e2e0, warm gray dark #494440, gray lighter #d6d7d9,
+   gray light #aeb0b5, gray #5b616b */
 
 /* html is for the whole page and overall appearance */
 html {
@@ -14,7 +15,7 @@ html {
 
 body {
   display: grid; /* to line up the children */
-  grid-template-columns: 40% 1fr; /*used claude for this*/
+  grid-template-columns: 40% 1fr; /* used claude for this */
   grid-template-rows: auto 1fr;
   gap: 12px; /* space between children */
   margin: 0; /* removing white edge of browser around page */
@@ -51,28 +52,20 @@ header {
   padding: 16px 20px;
   background-color: #e4e2e0;
   color: #494440;
-  border:2px solid #494440;
-  border-bottom: 4px solid #494440; /* thin Chicago red accent line */
+  border: 2px solid #494440;
+  border-bottom: 4px solid #494440; /* thicker bottom line under the title */
 }
 
-/* main section */
+/* main section - display: contents lets the panel and map sit
+   directly in the body grid */
 main {
-  flex: 1;
   display: contents;
-  flex-direction: row;
-  gap: 12px;
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  overflow: auto;
-  min-height: 0;
 }
 
 /* styling for section of map - our main display */
 #map {
   grid-column: 2;
   grid-row: 1 / 3;
-  flex: 1;
   max-width: 900px;
   border: 2px solid #494440;
   padding: 0;
@@ -95,24 +88,29 @@ main {
   color: #494440;
 }
 
-
-/* for panel on the left hand side */
+/* for panel on the left hand side, with the skyline photo behind
+   a see-through warm gray layer so the text stays readable */
 .controls {
-   grid-column: 1; 
+  grid-column: 1;
   border: 2px solid #494440;
   background-color: #e4e2e0;
-  overflow: auto; /* allowing to let this panel since this section can be long */
+  background-image:
+    linear-gradient(#e4e2e0b3, #e4e2e0b3),
+    url("../img/chicago-skyline.png");
+  background-size: cover;
+  background-position: center;
+  overflow: auto; /* adds a scrollbar since this panel can get long */
 }
 
 /* styling the dropdown menu */
 .category-select {
   width: 100%;
   height: 42px;
-  border: 0; /* no rounding */
+  border: 0;
   outline: 1px solid #494440; /* visible edge so the box doesn't disappear into the panel */
-  border-radius: 0;
+  border-radius: 0; /* no rounding */
   background-color: #494440;
-  color: #dce4ef;
+  color: #ffffff;
   text-indent: 8px;
   font-size: 14px;
   cursor: pointer; /* mouse turns into a hand */
@@ -133,7 +131,6 @@ label {
   color: #494440;
 }
 
-
 /* radio button for selection */
 .radio {
   display: flex;
@@ -150,11 +147,11 @@ label {
   padding: 0;
 }
 
-/* map legend */
+/* map legend and help text boxes */
 .legend {
   max-width: 220px;
   padding: 10px 12px;
-  background-color: #e4e2e0; /* near-black, slightly see-through */
+  background-color: #e4e2e0; /* same warm gray as the panels */
   border: 1px solid #494440;
   color: #494440;
   font-family: inherit;
@@ -184,44 +181,52 @@ label {
 }
 
 /* keeping the color square from shrinking and adding a
-   light border so dark colors stay visible */
+   border so light colors stay visible */
 .legend-icon {
   display: inline-block;
-  flex-shrink: 3;
-  width: 10px;
-  height: 10px;
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
   border: 1px solid #494440;
 }
 
-/*removing ther browsers default box around each group name*/
+/* help text box on the map that explains the colors */
+.map-help {
+  max-width: 260px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* removing the browser's default box around each group */
 fieldset {
   border: 0;
   margin: 0 0 16px;
-  padding: 5;
+  padding: 5px;
 }
 
-/* group headings styling for legends of these groups and not the whole doc*/
+/* group headings styling for legends of these groups and not the whole doc */
 legend {
-  padding: 5 5 8px;
+  padding: 5px 5px 8px;
   font-size: 16px;
   font-weight: 500;
 }
 
-/* text that explains what the map is showing*/
- .help-text {
-  color: #5b616b;
-  padding: 0 0 16px;
-}
-
-/*lists with no bullets - copied from Week 6*/
+/* lists with no bullets - copied from Week 6 */
 #category-list,
 .area-list {
   list-style-type: none;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
-/*search box - from week 6*/
+/* space between the buttons in both lists */
+#category-list li,
+.area-list li {
+  margin-bottom: 8px;
+}
+
+/* search box - from week 6 */
 .search {
   box-sizing: border-box;
   width: 100%;
@@ -229,13 +234,15 @@ legend {
   margin-bottom: 1em;
 }
 
-/*scrolling list*/
+/* scrolling list */
 .area-list {
   height: 180px;
   overflow-y: scroll;
 }
 
-
-
-
-
+/* credit line for the background photo */
+.photo-credit {
+  font-size: 12px;
+  margin: 0;
+  padding: 8px 16px;
+}
