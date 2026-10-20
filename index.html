@@ -25,13 +25,36 @@
     <!-- title and description of the project to explain what this is -->
     <header>
       <h1>Chicago Business Mix</h1>
-
     </header>
 
     <!-- adding the main side panel for the dashboard -->
     <main>
       <aside class="controls">
-        <!-- separating from the main map -->
+        <!-- working on the section that is controls.js the side panel-->
+         <section class = "section" aria-labelledby="explore-title">
+        <h2 id="explore-title" class="section-title">Explore</h2>
+        </section>
+
+         <!--from week 6, titled group with an empty list that controls.js fills in - from week 6-->
+        <fieldset id="categories">
+          <legend>Type of Business</legend>
+          <ul id="category-list"></ul>
+        </fieldset>
+
+       
+      <!--empty paragraph for controls.js to wroite into with an empty list, from week 8 stuff-->
+      <p id="category-help" class="help-text" </p>
+      
+        <!--search box and empty list-->
+      
+        <fieldset id="areas">
+          <legend>Community Areas</legend>
+          <input class="search" name="search-areas" aria-label="Search for a community area" placeholder="Search for a community area...">
+          <ul id="area-list" class="area-list"></ul>
+        </fieldset>
+        </section>
+      
+
       </aside>
 
       <!-- map container -->
