@@ -1,4 +1,4 @@
-// Built using examples from Weeks 2, 3, 4 and 6. I wrote the initial code, with debugging and explanations and a general guidance from 
+// Built using examples from Weeks 2, 3, 4 and 6. I wrote the initial code, with debugging and explanations and a general guidance from
 //  from Claude and ChatGPT.
 
 // imports functions for business categories and map colors
@@ -17,12 +17,12 @@ function initMap(el, areas, events) {
   // adds Esri's dark gray basemap with a maximum zoom of 16, 80% opacity and map credits
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
     maxZoom: 16, // Esri's light gray map only has tiles up to zoom 16
-    opacity: 0.8, 
+    opacity: 0.8,
     attribution: 'Tiles &copy; Esri &mdash; Esri, HERE, Garmin, &copy; OpenStreetMap contributors, and the GIS user community',
   }).addTo(map);
 
-  //Colors each community area by the selected business type, with a thick green border for the selected area and thin gray borders for the rest.
-  //from week 2 and 3
+  // Colors each community area by the selected business type, with a thick green border for the selected area and thin gray borders for the rest.
+  // from week 2 and 3
   function styleArea(feature) {
     const isSelected = feature.properties.area_numbe === selectedAreaNumber;
     return {
@@ -36,8 +36,8 @@ function initMap(el, areas, events) {
   // adds the 77 community areas to the map using styleArea for colors and borders
   const areasLayer = L.geoJSON(areas, { style: styleArea }).addTo(map);
 
-  //Shows the area’s name in bold and its number below when you hover over it.
-  //shows name in bold
+  // Shows the area’s name in bold and its number below when you hover over it.
+  // shows name in bold
   areasLayer.bindTooltip((layer) => {
     const props = layer.feature.properties;
     const value = getValue(props, category);
@@ -50,7 +50,7 @@ function initMap(el, areas, events) {
   // centers the map on Chicago and shifts it slightly left to avoid overlapping the legend
   map.setView([41.84, -87.65], 10.8);
 
-  // sends the clicked area's number through the event bus to highlight it, show its summary and zoom to it, 
+  // sends the clicked area's number through the event bus to highlight it, show its summary and zoom to it,
   // using Week 2 main.js and Week 6 hoods_select.js
   areasLayer.on('click', (evt) => {
     const areaNumber = evt.layer.feature.properties.area_numbe;
@@ -219,7 +219,7 @@ function initMap(el, areas, events) {
     });
   });
 
-  // adds a reset button at the top-left to clear the selected area, 
+  // adds a reset button at the top-left to clear the selected area,
   // switch back to All businesses and show the starting view of Chicago
   const resetControl = L.control({ position: 'topleft' });
   resetControl.onAdd = () => {
@@ -233,7 +233,6 @@ function initMap(el, areas, events) {
       events.dispatchEvent(event);
       map.setView([41.84, -87.65], 10.8);
     });
-
 
     // returns the reset box to Leaflet to display on the map
     return resetDiv;

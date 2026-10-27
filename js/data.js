@@ -1,9 +1,8 @@
-//I built this file mainly from the Week 4 and Week 6 bikeshare examples,
+// I built this file mainly from the Week 4 and Week 6 bikeshare examples,
 // plus JavaScript basics from the Week 2 and 3 readings.
-//Then I pasted it on Claude and asked it to edit if anything were missing
+// Then I pasted it on Claude and asked it to edit if anything were missing
 // it has also been an iterative process of back and forth with claude and chat
 
-  
 // stores the business types in one list, with a key to identify each type and a label to show on the page
 // lqKey gives the matching location quotient property in the data; 'all' uses density, so its lqKey is null
 // keeps the same structure for each type so other code can loop through the list and use the right labels and data
@@ -19,7 +18,7 @@ const CATEGORIES = [
   { key: 'Events_and_Recreation', lqKey: 'LQ_Events', label: 'Events & recreation (Location Quotient)' },
 ];
 
-const LOW_COUNT =5; //only because some businesses may have very little to be a generalizable concept
+const LOW_COUNT = 5; // only because some businesses may have very little to be a generalizable concept
 
 // looks through the categories for a matching key
 // returns that category's details so other code can use its label and lqKey
@@ -30,8 +29,6 @@ function getCategory(key) {
     }
   }
 }
-
-
 
 // loads the Chicago community area file and waits for the response
 // converts the JSON into a JavaScript object, then gets its list of area features
@@ -47,12 +44,12 @@ async function loadCcaData() {
     // gets the area name from GEOG, using community if GEOG is null or undefined
     // rounds population and income to whole numbers, keeping null income values as null
     // calculates businesses per 1,000 residents so areas with different populations can be compared
-    const name = props.GEOG ?? props.community;;
+    const name = props.GEOG ?? props.community; ;
     const population = Math.round(props.TOT_POP);
     const income = props.MEDINC === null ? null : Math.round(props.MEDINC);
     const density = props.Point_Count / props.TOT_POP * 1000;
 
-     // Adds the calculated values to the area's properties
+    // Adds the calculated values to the area's properties
     Object.assign(props, { name, population, income, density });
   }
 
@@ -63,19 +60,18 @@ async function loadCcaData() {
     cityTotals[category.key] = 0;
   }
 
-
   // Adds up all businesses across Chicago's community areas
   // so that cityTotals ends up holding Chicago's citywide total for all businesses and for each business type
   for (const area of areas) {
     cityTotals.all += area.properties.Point_Count;
-     // Adds up businesses in each category, skipping the overall total
+    // Adds up businesses in each category, skipping the overall total
     for (const category of CATEGORIES) {
       if (category.key !== 'all') {
         cityTotals[category.key] += area.properties[category.key];
       }
     }
   }
-// Returns the community areas and citywide business totals
+  // Returns the community areas and citywide business totals
   return { areas, cityTotals };
 }
 

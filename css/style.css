@@ -162,7 +162,7 @@ legend {
   font-size: 11px;
 }
 
-/*citations*/
+/* citations */
 .data-sources a {
   color: #41b6e6;
 }
@@ -190,7 +190,7 @@ legend {
   padding: 0;
 }
 
-/* legend boxes and label side by side*/
+/* legend boxes and label side by side */
 .legend-entry {
   display: flex;
   align-items: center;
@@ -234,7 +234,7 @@ legend {
   font-size: 13px;
 }
 
-/* cover page*/
+/* cover page */
 .cover {
   min-height: 100vh;
   display: flex;
@@ -249,7 +249,7 @@ legend {
   text-align: center;
 }
 
-/*title on the cover page */
+/* title on the cover page */
 .cover-title {
   margin: 0;
   font-size: 48px;

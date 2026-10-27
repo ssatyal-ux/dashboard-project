@@ -1,12 +1,12 @@
-// Adapted from Week 6 hoods_select.js to cache, sort and search the list and send 
-// selections through the event bus. Buttons use click listeners from Week 6 user_events 
-// used claude and chat gpt both to edit/debug and understand 
+// Adapted from Week 6 hoods_select.js to cache, sort and search the list and send
+// selections through the event bus. Buttons use click listeners from Week 6 user_events
+// used claude and chat gpt both to edit/debug and understand
 // and Week 8 address_autocomplete.
 
-//getting the list of business categories to make a button for each one */
+// getting the list of business categories to make a button for each one */
 import { CATEGORIES } from './data.js';
 
-// gets the panel (the side box), data (the 77 community areas) and event bus 
+// gets the panel (the side box), data (the 77 community areas) and event bus
 // (the message board that tells the map what was clicked) from main.js, then finds the 3 empty spots
 // to fill (Week 6 dom_manipulation hoods_select.js)
 function initControls(el, areas, events) {
@@ -14,10 +14,10 @@ function initControls(el, areas, events) {
   const searchEl = el.querySelector('.search');
   const areaListEl = el.querySelector('#area-list');
 
-// creates a button for each business type and sends the selected category
-// through the event bus so other parts of the page can update
-// includes the category's key in the event so they know which business type was clicked
-// the side box only announces one choice, and the other things on the page update to that accordance
+  // creates a button for each business type and sends the selected category
+  // through the event bus so other parts of the page can update
+  // includes the category's key in the event so they know which business type was clicked
+  // the side box only announces one choice, and the other things on the page update to that accordance
   for (const category of CATEGORIES) {
     const item = document.createElement('li');
     item.innerHTML = `<button type="button">${category.label}</button>`;

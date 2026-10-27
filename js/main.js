@@ -1,11 +1,11 @@
-// starts the app by loading the data with await and setting up the side panel 
-// and map using document.querySelector, their init functions and one shared event bus, 
+// starts the app by loading the data with await and setting up the side panel
+// and map using document.querySelector, their init functions and one shared event bus,
 // following Week 6 main.js
 import { initControls } from './controls.js';
 import { initMap } from './map.js';
 import { loadCcaData } from './data.js';
 
-// creates the shared message board (event bus) that lets the side 
+// creates the shared message board (event bus) that lets the side
 // panel and the map talk to each other (Week 6 dom_manipulation main.js)
 const events = new EventTarget();
 

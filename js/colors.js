@@ -1,35 +1,34 @@
-// deciding colors for community areas - for both the map and the chart 
+// deciding colors for community areas - for both the map and the chart
 // code and content derived from week 2 and 3 examples of using colors and building legend
 // again initial code done by self and ran through Claude AI to fix and debug and decipher
-// colors are derived from the city of Chicago design guidelines 
+// colors are derived from the city of Chicago design guidelines
 // https://design.chicago.gov/2019/08/26/choosing-the-cds-color-set.html
 
-//five color steps for licenses per 1,000 residents
-//listed from highest to lowest minimum, so the first match decides the color. each range gets its color and matches with label
+// five color steps for licenses per 1,000 residents
+// listed from highest to lowest minimum, so the first match decides the color. each range gets its color and matches with label
 // week 2 and 3 examples
 const DENSITY_CLASSES = [
-    {min: 25, color: '#fdb81e',label: '25 or more' },
-    {min: 16, color: '#f9c642',label: '16 to 25' },
-    {min: 12, color: '#fad980',label: '12 to 16' },
-    {min: 8, color: '#fff1d2',label: '8 to 12' },
-    {min: 0, color: '#ffffff',label: 'Under 8' },
+  { min: 25, color: '#fdb81e', label: '25 or more' },
+  { min: 16, color: '#f9c642', label: '16 to 25' },
+  { min: 12, color: '#fad980', label: '12 to 16' },
+  { min: 8, color: '#fff1d2', label: '8 to 12' },
+  { min: 0, color: '#ffffff', label: 'Under 8' },
 ];
 
-
-//six color step for location quotient. 
-// again using highest to lowest minimum and so the first match decides color. 
+// six color step for location quotient.
+// again using highest to lowest minimum and so the first match decides color.
 // week 2 and 3 examples
 const LQ_CLASSES = [
-    {min: 2, color: '#fdb81e',label: 'Much Higher Concentration (over 2)' },
-    {min: 1.1, color: '#f9c642',label: 'Higher Concentration (1.1  to 2)'},
-    {min: 0.9, color: '#fad980',label: 'Equivalent to the City (0.9-1.1)' },
-    {min: 0.5, color: '#fff1d2',label: 'Lower Concentration (0.5-0.9)' },
-    {min: 0.000001, color: '#ffffff',label: 'Much Lower (under 0.5)' },
-    {min: 0, color: '#cc393e',label: 'None in this Area' },
+  { min: 2, color: '#fdb81e', label: 'Much Higher Concentration (over 2)' },
+  { min: 1.1, color: '#f9c642', label: 'Higher Concentration (1.1  to 2)' },
+  { min: 0.9, color: '#fad980', label: 'Equivalent to the City (0.9-1.1)' },
+  { min: 0.5, color: '#fff1d2', label: 'Lower Concentration (0.5-0.9)' },
+  { min: 0.000001, color: '#ffffff', label: 'Much Lower (under 0.5)' },
+  { min: 0, color: '#cc393e', label: 'None in this Area' },
 ];
 
-//decides which color scale to use 
-//The map and the legend both read their colors from this one function, so they always match.
+// decides which color scale to use
+// The map and the legend both read their colors from this one function, so they always match.
 function getClasses(categoryKey) {
   if (categoryKey === 'all') {
     return DENSITY_CLASSES;
@@ -37,7 +36,7 @@ function getClasses(categoryKey) {
   return LQ_CLASSES;
 }
 
-//returns the number to color by density or the chosen location quotient
+// returns the number to color by density or the chosen location quotient
 function getValue(props, category) {
   if (category.key === 'all') {
     return props.density;
@@ -57,7 +56,6 @@ function getColor(props, category) {
       return cls.color;
     }
   }
-  
 }
 
 // Lets other files (like map.js) use these.
