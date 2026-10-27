@@ -3,12 +3,12 @@
 <!-- setting up the language -->
 <html lang="en">
   <head>
-    <!-- adapting scaling of text and displays for the phone -->
+    <!-- sets the text encoding, adjusts the page for phones and names the browser tab -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Chicago Business Mix by Community Area</title>
 
-    <!-- Leaflet's map styles (Week 3) -->
+    <!-- loads Leaflet's map styles -->
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -16,7 +16,7 @@
       crossorigin=""
     >
 
-    <!-- linking the font used in style.css (Week 4 scrollytelly) -->
+    <!-- linking the font used in style.css -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -29,7 +29,22 @@
   </head>
 
   <body>
-    <!-- main holds the whole page grid: title, side panel and map (Week 6 layout) -->
+    
+    <!-- cover page-->
+    <section class="cover">
+       <p class="cover-hint">Shubhanga Satyal, Fall 2026</p>
+      <h2 class="cover-title">Chicago Business Mix</h2>
+      
+      <p>
+        Compare the mix of businesses across Chicago's 77 community areas, and see
+        where a type of business makes up a larger or smaller share than it does citywide.
+      </p>
+      <p class="cover-hint">Scroll down to explore the map</p>
+     
+      
+    </section>
+
+    
     <main>
       <!-- title of the project -->
       <header>
@@ -38,16 +53,26 @@
 
       <!-- side panel that controls.js fills in -->
       <div class="controls">
+        <!-- who the tool is for and what decision it supports -->
+        <section class="section about">
+          <h2 class="section-title">About</h2>
+          <p>
+            This tool helps economic development staff, small business owners, and lenders compare business density
+            and mix across Chicago’s 77 community areas, explore potential gaps relative to population, and inform
+            initial decisions. It is an initial visual tool with room for improvement.
+          </p>
+        </section>
+
         <section class="section">
           <h2 class="section-title">Explore</h2>
 
-          <!-- titled group with an empty list that controls.js fills in - from Week 6 -->
+          
           <fieldset id="categories">
             <legend>Type of Business</legend>
             <ul id="category-list"></ul>
           </fieldset>
 
-          <!-- search box and empty list - from Week 6 -->
+          <!-- search box-->
           <fieldset id="areas">
             <legend>Community Areas</legend>
             <input
@@ -59,10 +84,34 @@
             <ul id="area-list" class="area-list"></ul>
           </fieldset>
         </section>
+
+        <!-- Credit and AI Acknowledgment-->
+        <section class="section about">
+          <h2 class="section-title">AI Use Credit</h2>
+          <p>
+            I built this tool from our instructor Mjumbe Poe's course examples, videos and readings (Weeks 2–8),
+            and prepared the data myself in ArcGIS Pro. I used Claude and ChatGPT as
+            guides: to explain code, help me debug, review my code, and suggest how to structure
+            the project. AI usage has been an iterative process with back and forth usage.
+          </p>
+        </section>
+
+        <!-- data citations -->
+        <section class="section data-sources">
+          <h2 class="section-title">Data Sources</h2>
+          <p>
+            Population and community area data come from the
+            <a href="https://cmap.illinois.gov/data/community-data-snapshots/" target="_blank">CMAP Community Data Snapshots</a>
+            (CCA_2026). Business locations come from the City of Chicago
+            <a href="https://data.cityofchicago.org/d/r5kz-chrr" target="_blank">Business Licenses</a>
+            dataset, and community area boundaries come from the City of Chicago
+            <a href="https://data.cityofchicago.org/d/cauq-8yn6" target="_blank">Boundaries - Community Areas</a>
+            dataset, both on the Chicago Data Portal.
+          </p>
+        </section>
       </div>
 
-      <!-- map container; the legend, help text and chart are added
-           as boxes on the map by map.js (Week 2 accessibility attributes) -->
+      <!-- map container -->
       <div
         id="map"
         role="region"
@@ -72,7 +121,7 @@
       ></div>
     </main>
 
-    <!-- load the map tool (Leaflet) first, then my own code (Week 3/6) -->
+    <!-- load the map tool (Leaflet) first, then my own code -->
     <script
       src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
       integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="

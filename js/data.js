@@ -1,11 +1,12 @@
-/*I built this file mainly from the Week 4 and Week 6 bikeshare examples, plus JavaScript basics from the Week 2 and 3 readings.
-  The I pasted it on Claude and asked it to edit if anything were missing*/
+//I built this file mainly from the Week 4 and Week 6 bikeshare examples,
+// plus JavaScript basics from the Week 2 and 3 readings.
+//Then I pasted it on Claude and asked it to edit if anything were missing
+// it has also been an iterative process of back and forth with claude and chat
 
   
-//key: count of number of businesses
-//lqkey: location quotient for the businesses
-//label: what the thing is called
-
+// stores the business types in one list, with a key to identify each type and a label to show on the page
+// lqKey gives the matching location quotient property in the data; 'all' uses density, so its lqKey is null
+// keeps the same structure for each type so other code can loop through the list and use the right labels and data
 const CATEGORIES = [
   { key: 'all', lqKey: null, label: 'All businesses (density)' },
   { key: 'Food_and_Beverage', lqKey: 'LQ_Food', label: 'Food & beverage (Location Quotient)' },
@@ -20,7 +21,8 @@ const CATEGORIES = [
 
 const LOW_COUNT =5; //only because some businesses may have very little to be a generalizable concept
 
-// Finds and returns the category with the matching key
+// looks through the categories for a matching key
+// returns that category's details so other code can use its label and lqKey
 function getCategory(key) {
   for (const category of CATEGORIES) {
     if (category.key === key) {
@@ -29,9 +31,10 @@ function getCategory(key) {
   }
 }
 
-//I got this mainly from the Week 4 and Week 6 bikeshare examples, then pasted it on Claude to fill in gaps + fix code
 
-// Loads the Chicago community area data
+
+// loads the Chicago community area file and waits for the response
+// converts the JSON into a JavaScript object, then gets its list of area features
 async function loadCcaData() {
   const response = await fetch('data/cca_final.json');
   const collection = await response.json();
@@ -41,7 +44,9 @@ async function loadCcaData() {
   for (const area of areas) {
     const props = area.properties;
 
-    // Gets the area name, rounds population and income, and calculates businesses per 1,000 residents
+    // gets the area name from GEOG, using community if GEOG is null or undefined
+    // rounds population and income to whole numbers, keeping null income values as null
+    // calculates businesses per 1,000 residents so areas with different populations can be compared
     const name = props.GEOG ?? props.community;;
     const population = Math.round(props.TOT_POP);
     const income = props.MEDINC === null ? null : Math.round(props.MEDINC);
@@ -51,7 +56,8 @@ async function loadCcaData() {
     Object.assign(props, { name, population, income, density });
   }
 
-  // Sets the starting citywide business totals to zero
+  // sets the citywide business totals to 0 for 'all' and each business type
+  // starts at 0 so the next loop can add each area's counts using += without getting NaN
   const cityTotals = { all: 0 };
   for (const category of CATEGORIES) {
     cityTotals[category.key] = 0;
@@ -59,6 +65,7 @@ async function loadCcaData() {
 
 
   // Adds up all businesses across Chicago's community areas
+  // so that cityTotals ends up holding Chicago's citywide total for all businesses and for each business type
   for (const area of areas) {
     cityTotals.all += area.properties.Point_Count;
      // Adds up businesses in each category, skipping the overall total

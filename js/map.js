@@ -1,48 +1,43 @@
-// importing required information from data.js (where the analysis is)
-// importing colors for the maps to be displayed
-// Claude and ChatGPT explained what needs to be done. Initial coding done by self, with explanations,
-//I had to reuse claude to find out how to exactly use grid-column, grid-rows etc
-// cleaning and debugging and suggesting what needs to be done is by Claude and ChatGPT both.
+// Built using examples from Weeks 2, 3, 4 and 6. I wrote the initial code, with debugging and explanations and a general guidance from 
+//  from Claude and ChatGPT.
+
+// imports functions for business categories and map colors
 import { getCategory } from './data.js';
 import { getClasses, getColor, getValue } from './colors.js';
-import { drawChart } from './area_chart.js';
 
-// comes from week 6 code
-// builds the map and remembers which business
-// type and community area the user has picked
+// sets up the map using the data and event bus, and stores the current business type and selected area
+// adapted from Week 6 stations_map.js
 function initMap(el, areas, events) {
   let category = getCategory('all');
   let selectedAreaNumber = null;
 
-  // creating a Leaflet map inside el and allowing zoom levels between whole numbers for a smoother experience
+  // creates the map and allows zoom levels like 10.8 (Week 6 stations_map.js, Week 2 main.js)
   const map = L.map(el, { zoomSnap: 0 });
 
-  // adding a light gray background map - also got this from Claude
-  // for the story maps assignment
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-    maxZoom: 22,
-    opacity: 0.8, // lets the warm gray page color show through so the map matches the panel
-    attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+  // adds Esri's dark gray basemap with a maximum zoom of 16, 80% opacity and map credits
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 16, // Esri's light gray map only has tiles up to zoom 16
+    opacity: 0.8, 
+    attribution: 'Tiles &copy; Esri &mdash; Esri, HERE, Garmin, &copy; OpenStreetMap contributors, and the GIS user community',
   }).addTo(map);
 
-  // Based on the Week 2 calcFeatureStyle function and the Week 3 choropleth style exercise
-  // This function colors each area based on the selected business category, makes the fill
-  // 75% opaque, and gives the selected area a thick border while other areas have thin ones.
+  //Colors each community area by the selected business type, with a thick green border for the selected area and thin gray borders for the rest.
+  //from week 2 and 3
   function styleArea(feature) {
     const isSelected = feature.properties.area_numbe === selectedAreaNumber;
     return {
       fillColor: getColor(feature.properties, category),
-      fillOpacity: 0.75,
-      color: isSelected ? '#e59393' : '#494440',
-      weight: isSelected ? 4 : 1,
+      fillOpacity: 0.9,
+      color: isSelected ? '#2e8540' : '#4d4d4d',
+      weight: isSelected ? 6 : 1,
     };
   }
 
-  // now bringing all 77 areas of Chicago onto the map
+  // adds the 77 community areas to the map using styleArea for colors and borders
   const areasLayer = L.geoJSON(areas, { style: styleArea }).addTo(map);
 
-  // Shows the area's name and value when you hover over it.
-  // Based on the Week 4 and Week 6 bindTooltip examples.
+  //Shows the area’s name in bold and its number below when you hover over it.
+  //shows name in bold
   areasLayer.bindTooltip((layer) => {
     const props = layer.feature.properties;
     const value = getValue(props, category);
@@ -51,10 +46,12 @@ function initMap(el, areas, events) {
       `${value.toFixed(2)}x the citywide share`;
     return `<strong>${props.name}</strong><br>${valueText}`;
   });
-map.setView([41.84, -87.65], 10.8);
 
-  // When an area is clicked, tells the rest of the app which one was picked.
-  // Based on the Week 6 dom_manipulation CustomEvent and event bus.
+  // centers the map on Chicago and shifts it slightly left to avoid overlapping the legend
+  map.setView([41.84, -87.65], 10.8);
+
+  // sends the clicked area's number through the event bus to highlight it, show its summary and zoom to it, 
+  // using Week 2 main.js and Week 6 hoods_select.js
   areasLayer.on('click', (evt) => {
     const areaNumber = evt.layer.feature.properties.area_numbe;
     const event = new CustomEvent('areaselected', {
@@ -63,15 +60,14 @@ map.setView([41.84, -87.65], 10.8);
     events.dispatchEvent(event);
   });
 
-  // working on the help text now - a box in the top-right corner of the map
-  // that explains what the colors mean, built the same way as the legend
+  // adds a help box at the top right and uses helpDiv to update its text later
   const helpControl = L.control({ position: 'topright' });
   let helpDiv = null;
 
+  // creates the help box with text and screen-reader labels, then adds it to Leaflet
   helpControl.onAdd = () => {
     helpDiv = L.DomUtil.create('div', 'legend map-help');
     helpDiv.id = 'map-help';
-    // same accessibility attributes as the legend (Week 2 accessibility example)
     helpDiv.setAttribute('role', 'region');
     helpDiv.setAttribute('aria-roledescription', 'Map help');
     helpDiv.setAttribute('aria-label', 'What the map colors mean');
@@ -79,28 +75,26 @@ map.setView([41.84, -87.65], 10.8);
     return helpDiv;
   };
 
-  // Rewrites the help text for the selected business type.
+  // shows the chosen business type in bold and explains the colors
   function updateHelpText() {
     if (category.key === 'all') {
-      helpDiv.textContent = 'Showing all businesses. Darker areas have more ' +
-        'business licenses per 1,000 residents.';
+      helpDiv.innerHTML = '<strong>All businesses</strong><br>' +
+        'Darker areas have more business licenses per 1,000 residents.';
     } else {
-      helpDiv.textContent = `Showing ${category.label.toLowerCase()}. Darker ` +
-        'gray areas have a larger share than the city as a whole; red areas ' +
-        'have a smaller share, and the darkest red areas have none.';
+      helpDiv.innerHTML = `<strong>${category.label}</strong><br>` +
+        'Darker areas have a larger share than the city as a whole; lighter ' +
+        'areas have a smaller share, and blue areas have none.';
     }
   }
 
-  // adding the help text to the map
+  // adds the help box to the top right of the map
   helpControl.addTo(map);
 
-  // working on the legend now
-  // keeping reference to its div to rewrite with changing category
+  // creates a legend below the help box and uses legendDiv to update it when a new business type is selected
   const legend = L.control({ position: 'topright' });
   let legendDiv = null;
 
-  // Creates the bottom-right map legend with accessibility features,
-  // adapted from Week 2 and 3 examples.
+  // creates and fills the legend with accessibility labels, then returns it to Leaflet
   legend.onAdd = () => {
     legendDiv = L.DomUtil.create('div', 'legend');
     legendDiv.id = 'map-legend';
@@ -112,14 +106,13 @@ map.setView([41.84, -87.65], 10.8);
     return legendDiv;
   };
 
-  // Adds the legend title, colors and labels and updates them when
-  // the dropdown changes, adapted from Week 2 and 4 examples.
+  // sets the legend title and gets its colors from colors.js
   function updateLegend() {
     const title = category.key === 'all' ?
       'Licenses per 1,000 residents' :
       `${category.label}: share vs. citywide`;
     const classes = getClasses(category.key);
-
+    // adds the legend title and a colored square with a label for each category
     legendDiv.innerHTML = `
       <h2 id="legend-title">${title}</h2>
       <ul class="legend-entries">
@@ -133,46 +126,89 @@ map.setView([41.84, -87.65], 10.8);
     `;
   }
 
-  // adding the legend to the map
+  // adds the legend to the top-right of the map, below the help box
   legend.addTo(map);
 
-  // working on the chart box now - built the same way as the legend, in the
-  // bottom-left corner of the map. The chart is drawn after the box is added
-  // to the map so Chart.js can measure the box's size.
-  const chartControl = L.control({ position: 'topright' });
-  let chartDiv = null;
+  // creates an area summary box at the bottom-left of the map and uses areaInfoDiv to update
+  //  its numbers when an area is selected
+  const areaInfo = L.control({ position: 'bottomleft' });
+  let areaInfoDiv = null;
 
-  chartControl.onAdd = () => {
-    chartDiv = L.DomUtil.create('div', 'legend map-chart');
-    chartDiv.id = 'map-chart';
-    // same accessibility attributes as the legend (Week 2 accessibility example)
-    chartDiv.setAttribute('role', 'region');
-    chartDiv.setAttribute('aria-roledescription', 'Chart');
-    chartDiv.setAttribute('aria-labelledby', 'chart-title');
-    chartDiv.setAttribute('tabindex', '0');
-    return chartDiv;
+  // creates the area summary box, adds screen-reader and keyboard support, fills it in and returns it to Leaflet
+  areaInfo.onAdd = () => {
+    areaInfoDiv = L.DomUtil.create('div', 'legend map-area-info');
+    areaInfoDiv.id = 'map-area-info';
+    areaInfoDiv.setAttribute('role', 'region');
+    areaInfoDiv.setAttribute('aria-roledescription', 'Area summary');
+    areaInfoDiv.setAttribute('aria-labelledby', 'area-info-title');
+    areaInfoDiv.setAttribute('tabindex', '0');
+    updateAreaInfo();
+    return areaInfoDiv;
   };
 
-  chartControl.addTo(map);
-  drawChart(chartDiv, areas, category);
+  // rounds the number and adds commas every three digits
+  function addCommas(num) {
+    const digits = `${Math.round(num)}`;
+    let result = '';
+    for (let i = digits.length; i > 0; i -= 3) {
+      const start = i - 3 < 0 ? 0 : i - 3;
+      const group = digits.slice(start, i);
+      result = result === '' ? group : `${group},${result}`;
+    }
+    return result;
+  }
 
-  // Updates the selected business type, map colors, legend, help text and
-  // chart when the business type changes, adapted from Week 2 and 6 examples.
+  // updates the area summary box; if no area is selected, shows instructions and stops
+  function updateAreaInfo() {
+    if (selectedAreaNumber === null) {
+      areaInfoDiv.innerHTML = `
+        <h2 id="area-info-title">Selected area</h2>
+        <p>Click an area on the map or pick one from the list to see its numbers.</p>
+      `;
+      return;
+    }
+
+    // finds the selected area among the 77 areas and stores its data in props
+    let props = null;
+    for (const area of areas) {
+      if (area.properties.area_numbe === selectedAreaNumber) {
+        props = area.properties;
+      }
+    }
+
+    // shows the area's business density for All businesses, or its LQ for the selected business type
+    const value = getValue(props, category);
+    const valueText = category.key === 'all' ?
+      `${value.toFixed(1)} business licenses per 1,000 residents` :
+      `${value.toFixed(2)}x the citywide share of ${category.label.toLowerCase()}`;
+
+    // shows the selected area's name, business density or LQ, population and total business licenses
+    areaInfoDiv.innerHTML = `
+      <h2 id="area-info-title">${props.name}</h2>
+      <p>${valueText}</p>
+      <p>Population: ${addCommas(props.population)}</p>
+      <p>Total business licenses: ${addCommas(props.Point_Count)}</p>
+    `;
+  }
+
+  // adds the area summary box to the bottom-left of the map
+  areaInfo.addTo(map);
+
+  // saves the selected business type, recolors the map and updates the legend, help box and area summary
   events.addEventListener('categorychanged', (evt) => {
     category = getCategory(evt.detail.categoryKey);
     areasLayer.resetStyle();
     updateLegend();
     updateHelpText();
-    drawChart(chartDiv, areas, category);
+    updateAreaInfo();
   });
 
-  // Highlights the selected area and flies to it, whether it was picked
-  // from the list or clicked on the map, adapted from Week 2, 4 and 6
-  // examples, with maxZoom set to 12 to avoid zooming in too close.
+  // saves the area selected from the map or list, outlines it in green and shows its numbers
   events.addEventListener('areaselected', (evt) => {
     selectedAreaNumber = evt.detail.areaNumber;
     areasLayer.resetStyle();
-
+    updateAreaInfo();
+    // moves the map to the selected area in 0.75 seconds, with maxZoom 12 to avoid zooming in too close
     areasLayer.eachLayer((layer) => {
       if (layer.feature.properties.area_numbe === selectedAreaNumber) {
         map.flyToBounds(layer.getBounds(), {
@@ -183,7 +219,29 @@ map.setView([41.84, -87.65], 10.8);
     });
   });
 
+  // adds a reset button at the top-left to clear the selected area, 
+  // switch back to All businesses and show the starting view of Chicago
+  const resetControl = L.control({ position: 'topleft' });
+  resetControl.onAdd = () => {
+    const resetDiv = L.DomUtil.create('div', 'legend');
+    resetDiv.innerHTML = '<button type="button">Reset map</button>';
+    resetDiv.querySelector('button').addEventListener('click', () => {
+      selectedAreaNumber = null;
+      const event = new CustomEvent('categorychanged', {
+        detail: { categoryKey: 'all' },
+      });
+      events.dispatchEvent(event);
+      map.setView([41.84, -87.65], 10.8);
+    });
+
+
+    // returns the reset box to Leaflet to display on the map
+    return resetDiv;
+  };
+  resetControl.addTo(map);
+
   return map;
 }
 
+// exports initMap so main.js can use it
 export { initMap };

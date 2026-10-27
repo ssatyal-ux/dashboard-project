@@ -1,30 +1,35 @@
-//deciding colors for community areas - for both the map and the chart 
+// deciding colors for community areas - for both the map and the chart 
 // code and content derived from week 2 and 3 examples of using colors and building legend
 // again initial code done by self and ran through Claude AI to fix and debug and decipher
-// Claude also helped with logical reasoning as to what needs to be done and explained and taught the code to me
 // colors are derived from the city of Chicago design guidelines 
+// https://design.chicago.gov/2019/08/26/choosing-the-cds-color-set.html
 
+//five color steps for licenses per 1,000 residents
+//listed from highest to lowest minimum, so the first match decides the color. each range gets its color and matches with label
+// week 2 and 3 examples
 const DENSITY_CLASSES = [
-    {min: 25, color: '#000000',label: '25 or more' },
-    {min: 16, color: '#4d4d4d',label: '16 to 25' },
-    {min: 12, color: '#b3b3b3',label: '12 to 16' },
-    {min: 8, color: '#d9d9d9',label: '8 to 12' },
+    {min: 25, color: '#fdb81e',label: '25 or more' },
+    {min: 16, color: '#f9c642',label: '16 to 25' },
+    {min: 12, color: '#fad980',label: '12 to 16' },
+    {min: 8, color: '#fff1d2',label: '8 to 12' },
     {min: 0, color: '#ffffff',label: 'Under 8' },
 ];
-// Color key for the "All businesses" map: more licenses per 1,000 residents = darker blue.
 
-//assigning colors for location quotient 
+
+//six color step for location quotient. 
+// again using highest to lowest minimum and so the first match decides color. 
+// week 2 and 3 examples
 const LQ_CLASSES = [
-    {min: 2, color: '#000000',label: 'Much Higher Concentration' },
-    {min: 1.1, color: '#4d4d4d',label: 'Higher Concentration (1.1  to 2)'},
-    {min: 0.9, color: '#b3b3b3',label: 'Equivalent to the City (0.9-1.1)' },
-    {min: 0.5, color: '#d9d9d9',label: 'Lower Concentration (0.5-0.9)' },
+    {min: 2, color: '#fdb81e',label: 'Much Higher Concentration (over 2)' },
+    {min: 1.1, color: '#f9c642',label: 'Higher Concentration (1.1  to 2)'},
+    {min: 0.9, color: '#fad980',label: 'Equivalent to the City (0.9-1.1)' },
+    {min: 0.5, color: '#fff1d2',label: 'Lower Concentration (0.5-0.9)' },
     {min: 0.000001, color: '#ffffff',label: 'Much Lower (under 0.5)' },
-    {min: 0, color: '#41b6e6',label: 'None in this Area' },
+    {min: 0, color: '#cc393e',label: 'None in this Area' },
 ];
 
-// If the user selects "All businesses", use the density color scale.
-// For any specific business type, use the location quotient color scale.
+//decides which color scale to use 
+//The map and the legend both read their colors from this one function, so they always match.
 function getClasses(categoryKey) {
   if (categoryKey === 'all') {
     return DENSITY_CLASSES;
@@ -32,8 +37,7 @@ function getClasses(categoryKey) {
   return LQ_CLASSES;
 }
 
-// Gets the area's business density if "All businesses" is selected.
-// Otherwise, gets the area's LQ for the selected business type.
+//returns the number to color by density or the chosen location quotient
 function getValue(props, category) {
   if (category.key === 'all') {
     return props.density;
@@ -44,6 +48,7 @@ function getValue(props, category) {
 
 // Gets the area's number, then goes down the color key from top to
 // bottom and returns the color of the first line the number reaches.
+// the steps are sorted high to low in the color codes above, so the first match will be the right one.
 function getColor(props, category) {
   const value = getValue(props, category);
   const classes = getClasses(category.key);
