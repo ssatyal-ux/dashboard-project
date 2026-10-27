@@ -1,3 +1,6 @@
+## ASSIGNMENT 2
+Live site: [https://ssatyal-ux.github.io/dashboard-project/](https://ssatyal-ux.github.io/dashboard-project/)
+
 ## About the Dashboard:
 
 This tool helps economic development staff, small business owners, and lenders compare business density and mix across Chicago’s 77 community areas, explore potential gaps relative to population, and inform initial decisions. It is an initial visual tool with room for improvement. It hopes to help users identify potentially underserved areas and explore where new businesses or additional support could be useful. Community Development Organizations could also use it to identify areas that may benefit from small business support and targeted investment.
