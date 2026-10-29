@@ -82,8 +82,8 @@ function initMap(el, areas, events) {
         'Darker areas have more business licenses per 1,000 residents.';
     } else {
       helpDiv.innerHTML = `<strong>${category.label}</strong><br>` +
-        'Darker areas have a larger share than the city as a whole; lighter ' +
-        'areas have a smaller share, and blue areas have none.';
+        'Darker (Yellow) areas have a larger share than the city as a whole; lighter ' +
+        'areas have a smaller share, and red areas have none.';
     }
   }
 

@@ -15,7 +15,7 @@ This tool helps economic development staff, small business owners, and lenders c
 ## Data Sources:
 
 City of Chicago, “Business Licenses,” Chicago Data Portal, accessed [12 Oct 2026], https://data.cityofchicago.org/d/r5kz-chrr.
-City of Chicago, “Boundaries - Community Areas,” Chicago Data Portal, accessed [12 Oct 2026], https://data.cityofchicago.org/d/cauq-8yn6.
+City of Chicago, “Boundaries - Community Areas,” Chicago Data Portal, accessed [12 Oct 2027], https://data.cityofchicago.org/d/cauq-8yn6.
 Chicago Metropolitan Agency for Planning (CMAP), “Community Data Snapshots” (CCA_2026), accessed [12 Oct 2026], https://cmap.illinois.gov/data/community-data-snapshots/.
 Esri, “World Dark Gray Base” basemap. Sources: Esri, HERE, Garmin, © OpenStreetMap contributors, and the GIS user community.
 City of Chicago, “Chicago Design System,” color palette, accessed [12 Oct 2026], https://design.chicago.gov/.
